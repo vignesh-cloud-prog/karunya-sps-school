@@ -32,7 +32,7 @@ const Highlights = () => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   return (
     <section aria-label="Hero Slider" className="relative h-[600px] md:h-[700px] overflow-hidden bg-gradient-to-b from-primary-yellow/5 to-white">

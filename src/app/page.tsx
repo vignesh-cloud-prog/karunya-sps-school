@@ -19,36 +19,6 @@ export default function Home() {
     {
       src: '/about-image.jpg',
       alt: 'Students at Karunya Special School'
-    },
-
-    // {
-    //   src: '/birthday.jpg',
-    //   alt: 'Birthday celebration at school'
-    // },
-    // {
-    //   src: '/contact-image.jpg',
-    //   alt: 'School activities'
-    // }
-  ];
-
-  const activities = [
-    {
-      date: '26-Jan-2024',
-      image: '/republic-day.jpg',
-      title: 'Republic Day',
-      description: 'Karunya Special School vibrated with patriotic spirit on Republic Day. Students, teachers, and staff, a united mosaic, stood tall'
-    },
-    {
-      date: '12-Jan-2024',
-      image: '/swachh-bharat.jpg',
-      title: 'Swachh Bharat Abhiyaan',
-      description: 'Karunya Special School embraced its civic duty on January 12th, joining the Swachh Bharat Abhiyaan with boundless'
-    },
-    {
-      date: '03-Dec-2023',
-      image: '/disability-day.jpg',
-      title: 'World Disability Day',
-      description: 'Karunya Special School resonated with inclusivity on World Disability Day. Engaging programs celebrated unique'
     }
   ];
 
@@ -291,8 +261,8 @@ export default function Home() {
                     <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
                       Birthday Celebration
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      Karunya special school celebrated well wisher's birthday. Students, teachers, and staff, a vibrant tapestry of well-wishers, surrounded the guest of honor. Cake slices, shared with warmth and smiles, cemented the joyous occasion.
+                    <p className="text-gray-800 leading-relaxed">
+                      Karunya special school celebrated well wisher&apos;s birthday. Students, teachers, and staff, a vibrant tapestry of well-wishers, surrounded the guest of honor. Cake slices, shared with warmth and smiles, cemented the joyous occasion.
                     </p>
                   </div>
                 </div>
@@ -316,8 +286,8 @@ export default function Home() {
                     <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
                       Skating Class
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      Wheels whiz, laughter rings - Karunya's rink celebrates joy on blades. Skates empower each child's journey, from wobbly starts to graceful turns. Inclusion rolls forward, one joyful stride at a time.
+                    <p className="text-gray-800 leading-relaxed">
+                      Wheels whiz, laughter rings - Karunya&apos;s rink celebrates joy on blades. Skates empower each child&apos;s journey, from wobbly starts to graceful turns. Inclusion rolls forward, one joyful stride at a time.
                     </p>
                   </div>
                 </div>
@@ -367,7 +337,7 @@ export default function Home() {
                       Cycling
                     </h3>
                     <p className="text-gray-600 leading-relaxed">
-                      Two wheels and endless smiles! Karunya kids cycle free, joy in every turn. Inclusion rolls, spirits high, sunshine paints their laughter's sky.
+                      Two wheels and endless smiles! Karunya kids cycle free, joy in every turn. Inclusion rolls, spirits high, sunshine paints their laughter&apos;s sky.
                     </p>
               </div>
             </div>
@@ -463,13 +433,13 @@ export default function Home() {
                     date: '03-Dec-2023',
                     image: '/disability-day.jpg',
                     title: 'World Disability Day',
-                    description: 'Karunya Special School resonated with inclusivity on World Disability Day. Engaging programs celebrated unique abilities, featuring inspiring performances by our students. The day highlighted our commitment to creating an inclusive world where every individual\'s potential is recognized and celebrated.'
+                    description: 'Karunya Special School resonated with inclusivity on World Disability Day. Engaging programs celebrated unique abilities, featuring inspiring performances by our students. The day highlighted our commitment to creating an inclusive world where every individual&apos;s potential is recognized and celebrated.'
                   },
                   {
                     date: '14-Nov-2023',
                     image: '/childrens-day.jpg',
-                    title: 'Children\'s Day',
-                    description: 'A joyous celebration marked Children\'s Day at Karunya Special School. The day was filled with fun activities, games, and special performances by our students. Teachers organized entertaining programs, making it a memorable day for all our special children.'
+                    title: 'Children&apos;s Day',
+                    description: 'A joyous celebration marked Children&apos;s Day at Karunya Special School. The day was filled with fun activities, games, and special performances by our students. Teachers organized entertaining programs, making it a memorable day for all our special children.'
                   },
 
                   {
@@ -557,7 +527,7 @@ export default function Home() {
               {[
                 { name: 'Mrs Agnes Kunder', role: '' },
                 { name: 'Mr I Prabhakar Ammanna', role: '' },
-                { name: 'Mrs Cherishma D\'silva', role: '' },
+                { name: 'Mrs Cherishma D&apos;silva', role: '' },
                 { name: 'Mrs Jasmine Sneha Ammanna', role: '' },
                 { name: 'Mrs Renita Rajashree Jathanna', role: '' },
                 { name: 'Mrs Melina Manohar', role: '' },
@@ -683,7 +653,7 @@ export default function Home() {
             <div id='volunteer'>
               <h2 className="text-4xl font-bold mb-8 text-[#FF4B00]">VOLUNTEER WITH US</h2>
               <p className="text-xl mb-8 text-gray-800">
-                Volunteer with us for making a difference in somebody's life and also it is a good opportunity for you to give back to the society. For more information, mail us at karunyaspschool@gmail.com
+                Volunteer with us for making a difference in somebody&apos;s life and also it is a good opportunity for you to give back to the society. For more information, mail us at karunyaspschool@gmail.com
               </p>
               <form className="space-y-6">
                 <div>
