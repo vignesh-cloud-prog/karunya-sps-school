@@ -10,16 +10,17 @@ const Navbar = () => {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/team', label: 'Team' },
-    { href: '/programs', label: 'Programs' },
-    { href: '/activities', label: 'Activities' },
-    { href: '/contact', label: 'Contact Us' },
+    { href: '/#about', label: 'About' },
+    { href: '/#programs', label: 'Programs' },
+    { href: '/#activities', label: 'Activities' },
+    { href: '/#contact', label: 'Contact Us' },
   ];
 
   const moreLinks = [
-    { href: '/reports', label: 'Reports' },
-    { href: '/get-involved', label: 'Get Involved' },
-    { href: '/volunteer', label: 'Volunteer' },
+    { href: '/#reports', label: 'Reports' },
+    { href: '/#members', label: 'Members' },
+    { href: '/#support', label: 'Donate' },
+    { href: '/#volunteer', label: 'Volunteer' },
   ];
 
   return (
@@ -40,7 +41,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-3 md:hidden">
           {/* Facebook Icon */}
           <Link
-            href="https://facebook.com"
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#1877F2] hover:opacity-80 transition-opacity p-2"
@@ -56,7 +57,7 @@ const Navbar = () => {
 
           {/* Donate Button */}
           <Link
-            href="/donate"
+            href="/#support"
             className="inline-block bg-[#FF4B00] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#0077BE] transition-colors duration-300"
           >
             Donate
@@ -130,7 +131,7 @@ const Navbar = () => {
         {/* Desktop Social and Donate */}
         <div className="hidden md:flex items-center space-x-6">
           <Link
-            href="https://facebook.com"
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#1877F2] hover:opacity-80 transition-opacity"
@@ -144,7 +145,7 @@ const Navbar = () => {
             </svg>
           </Link>
           <Link
-            href="/donate"
+            href="/#support"
             className="inline-block bg-[#FF4B00] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#0077BE] transition-colors duration-300 shadow-sm hover:shadow-md"
           >
             DONATE

@@ -98,8 +98,8 @@ export default function Home() {
       {/* Consistent section spacing and gradients */}
       <div className="space-y-1"> {/* Add 1px gap between sections for visual separation */}
         {/* About Section */}
-        <section aria-labelledby="about-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+        <section id="about" aria-labelledby="about-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
               <h2 id="about-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">About Us</h2>
@@ -136,20 +136,20 @@ export default function Home() {
                 </Swiper>
               </div>
               <div>
-                <p className="text-gray-700 mb-6 leading-relaxed text-lg">
+                <p className="text-gray-800 mb-6 leading-relaxed text-lg">
                   Our NGO believes that all children should be given equal opportunities and see that they grow up in a decent environment and become the proud citizens of the country.
                 </p>
-                <p className="text-gray-700 leading-relaxed text-lg">
+                <p className="text-gray-800 leading-relaxed text-lg">
                   Karunya Special School strives to rehabilitate the special children by training them to acquire special skill and lead an independent life. Special children include those with autism, mental retardation, down syndrome and slow learners.
                 </p>
               </div>
-          </div>
+            </div>
         </div>
       </section>
 
         {/* Vision & Mission Section */}
         <section aria-labelledby="vision-mission-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-[#FFB800]/10 to-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+          <div className="absolute inset-0 opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
               <h2 id="vision-mission-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Mission & Vision</h2>
@@ -165,10 +165,10 @@ export default function Home() {
                   </svg>
                   OUR VISION
                 </h3>
-                <p className="text-gray-700 leading-relaxed text-lg">
+                <p className="text-gray-800 leading-relaxed text-lg">
                   To see that all children get equal opportunities in their lives so that the society is equipped with healthy citizens and therefore be more productive in their lives. To incorporate more programs for the children in future to enrich their lives.
-            </p>
-          </div>
+                </p>
+              </div>
 
               {/* Mission Card */}
               <div className="bg-white p-8 md:p-10 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[#FFB800]/20">
@@ -178,7 +178,7 @@ export default function Home() {
                   </svg>
                   OUR MISSION
                 </h3>
-                <p className="text-gray-700 leading-relaxed text-lg">
+                <p className="text-gray-800 leading-relaxed text-lg">
                   In order to fulfill our vision we have been serving the children with mentally disabled, autism and other ailments. We are providing them the atmosphere such that they learn and participate in the society equipped with necessary knowledge and cultural activities.
                 </p>
               </div>
@@ -188,7 +188,7 @@ export default function Home() {
 
         {/* Focus Areas Section */}
         <section aria-labelledby="focus-areas-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-[#FFB800]/10 to-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+          <div className="absolute inset-0 opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
               <h2 id="focus-areas-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Our Focus Areas</h2>
@@ -215,7 +215,7 @@ export default function Home() {
                         {item.icon}
                       </div>
                       <h3 className="text-xl font-semibold text-center mb-4 text-[#0077BE]">{item.title}</h3>
-                      <p className="text-gray-600 text-center">{item.description}</p>
+                      <p className="text-gray-800 text-center">{item.description}</p>
                     </div>
                   </SwiperSlide>
                 ))}
@@ -230,7 +230,7 @@ export default function Home() {
                     {item.icon}
                   </div>
                   <h3 className="text-xl font-semibold text-center mb-4 text-[#0077BE]">{item.title}</h3>
-                  <p className="text-gray-600 text-center">{item.description}</p>
+                  <p className="text-gray-800 text-center">{item.description}</p>
                 </div>
               ))}
           </div>
@@ -238,8 +238,8 @@ export default function Home() {
       </section>
 
         {/* Programs Section */}
-        <section aria-labelledby="programs-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+        <section id="programs" aria-labelledby="programs-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
+          <div className="absolute inset-0  opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-16">
               <h2 id="programs-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Programs</h2>
@@ -413,8 +413,8 @@ export default function Home() {
         </section>
 
         {/* Activities Section */}
-        <section aria-labelledby="activities-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-[#FFB800]/10 to-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+        <section id="activities" aria-labelledby="activities-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
+          <div className="absolute inset-0  opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
               <h2 id="activities-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Our Activities</h2>
@@ -545,8 +545,8 @@ export default function Home() {
         </section>
 
         {/* Members Section */}
-        <section aria-labelledby="members-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+        <section id="members" aria-labelledby="members-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
+          <div className="absolute inset-0  opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
               <h2 id="members-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Members</h2>
@@ -578,8 +578,8 @@ export default function Home() {
       </section>
 
         {/* Reports Section */}
-        <section aria-labelledby="reports-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-[#FFB800]/10 to-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+        <section id="reports" aria-labelledby="reports-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
+          <div className="absolute inset-0  opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
               <h2 id="reports-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Reports</h2>
@@ -615,11 +615,11 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section aria-labelledby="contact-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-[#FFB800]/10 to-[#FFB800]/30 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+        <section id="support" aria-labelledby="contact-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[#FFB800]/5"></div>
           <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 relative">
-            <div>
-              <h2 id="contact-title" className="text-4xl font-bold mb-8 text-[#FF4B00]">DONATE NOW!</h2>
+            <div id="donate">
+              <h2 className="text-4xl font-bold mb-8 text-[#FF4B00]">DONATE NOW!</h2>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-[#0077BE] mb-6">Bank Account Details</h3>
@@ -632,8 +632,8 @@ export default function Home() {
                     ].map((detail, index) => (
                       <div key={index} className="flex items-center justify-between group">
                         <div>
-                          <p className="text-sm text-gray-500">{detail.label}</p>
-                          <p className="text-gray-700 font-medium">{detail.value}</p>
+                          <p className="text-sm text-gray-600">{detail.label}</p>
+                          <p className="text-gray-900 font-medium">{detail.value}</p>
                         </div>
                         <button 
                           onClick={() => {
@@ -663,8 +663,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center justify-center">
-                  <div className="bg-white p-8 rounded-2xl">
-                    {/* <h3 className="text-2xl font-bold text-[#0077BE] mb-6 text-center">Scan to Pay</h3> */}
+                  <div className="bg-white p-8 rounded-2xl shadow-md">
                     <Image
                       src="/upi-qr.jpeg"
                       alt="BHIM UPI QR Code for Karunya Special School"
@@ -676,14 +675,14 @@ export default function Home() {
                 </div>
               </div>
               <div className="mt-8">
-                <p className="italic text-gray-600">
+                <p className="italic text-gray-700">
                   <span className="font-semibold text-[#0077BE]">Note:</span> All donations are eligible for tax savings under 80G.
                 </p>
               </div>
             </div>
-            <div>
+            <div id='volunteer'>
               <h2 className="text-4xl font-bold mb-8 text-[#FF4B00]">VOLUNTEER WITH US</h2>
-              <p className="text-xl mb-8 text-[#0077BE]">
+              <p className="text-xl mb-8 text-gray-800">
                 Volunteer with us for making a difference in somebody's life and also it is a good opportunity for you to give back to the society. For more information, mail us at karunyaspschool@gmail.com
               </p>
               <form className="space-y-6">
@@ -691,7 +690,7 @@ export default function Home() {
                   <input 
                     type="text" 
                     placeholder="Name *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-" 
+                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
                     required 
                   />
                 </div>
@@ -699,7 +698,7 @@ export default function Home() {
                   <input 
                     type="email" 
                     placeholder="Email *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-" 
+                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
                     required 
                   />
                 </div>
@@ -707,20 +706,20 @@ export default function Home() {
                   <input 
                     type="tel" 
                     placeholder="Phone *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-" 
+                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
                     required 
                   />
                   <input 
                     type="text" 
                     placeholder="Location *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-" 
+                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
                     required 
                   />
                 </div>
                 <div>
                   <textarea 
                     placeholder="Message" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline- h-32"
+                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none h-32 text-gray-900"
                   ></textarea>
                 </div>
                 <div className="flex items-center justify-between">
@@ -738,8 +737,8 @@ export default function Home() {
         </section>
 
         {/* Get in touch Section */}
-        <section aria-labelledby="contact-info-title" className="py-20 md:py-28 px-4 bg-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/pattern-bg.png')] opacity-5"></div>
+        <section id='contact' aria-labelledby="contact-info-title" className="py-20 md:py-28 px-4 bg-white relative overflow-hidden">
+          <div className="absolute inset-0 opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
               <h2 id="contact-info-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-12">Get in touch</h2>
@@ -749,15 +748,15 @@ export default function Home() {
               <div className="space-y-8">
                 <div>
                   <h3 className="text-2xl text-[#0077BE] mb-4"> Address</h3>
-                  <p className="text-gray-600">Kadekar- Kudrukere Post, Malpe- 576108</p>
+                  <p className="text-gray-800">Kadekar- Kudrukere Post, Malpe- 576108</p>
                 </div>
                 <div>
                   <h3 className="text-2xl text-[#0077BE] mb-4">Email Address</h3>
-                  <p className="text-gray-600">karunyaspschool@gmail.com</p>
+                  <p className="text-gray-800">karunyaspschool@gmail.com</p>
                 </div>
                 <div>
                   <h3 className="text-2xl text-[#0077BE] mb-4">Phone Number</h3>
-                  <p className="text-gray-600">9742352647</p>
+                  <p className="text-gray-800">9742352647</p>
                 </div>
                 <div>
                   <h3 className="text-2xl text-[#0077BE] mb-4">Follow Us</h3>
