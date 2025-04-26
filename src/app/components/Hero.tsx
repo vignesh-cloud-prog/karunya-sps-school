@@ -2,30 +2,41 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { getHighlights, Highlight } from '../../services/highlights';
 
 const Highlights = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slides, setSlides] = useState<Highlight[]>([]);
 
-  const slides = [
-    {
-      image: '/hero-1.jpg',
-      title: 'Karunya Special School',
-      description: 'We provide Education for Specially Aided Children in and around Malpe',
-      tagline: 'dare to be DIFFERENT'
-    },
-    {
-      image: '/hero-2.jpeg',
-      title: 'Education for Specially Aided Children',
-      description: 'Creating a nurturing environment for children with special needs to learn and grow',
-      tagline: 'Empowering Every Child'
-    },
-    {
-      image: '/hero-3.jpeg',
-      title: 'Building Future Together',
-      description: 'Supporting children with autism, down syndrome, and special learning needs',
-      tagline: 'Making Dreams Possible'
-    }
-  ];
+  useEffect(() => {
+    const fetchHighlights = async () => {
+      const highlights = await getHighlights();
+      setSlides(highlights);
+    };
+    fetchHighlights();
+  }, []);
+
+  // const slides = [
+  //   {
+  //     image: '/hero-1.jpg',
+  //     title: 'Karunya Special School',
+  //     description: 'We provide Education for Specially Aided Children in and around Malpe',
+  //     tagline: 'dare to be DIFFERENT'
+  //   },
+  //   {
+  //     image: '/hero-2.jpeg',
+  //     title: 'Education for Specially Aided Children',
+  //     description: 'Creating a nurturing environment for children with special needs to learn and grow',
+  //     tagline: 'Empowering Every Child'
+  //   },
+  //   {
+  //     image: '/hero-3.jpeg',
+  //     title: 'Building Future Together',
+  //     description: 'Supporting children with autism, down syndrome, and special learning needs',
+  //     tagline: 'Making Dreams Possible'
+  //   }
+  // ];
+
 
   useEffect(() => {
     const timer = setInterval(() => {

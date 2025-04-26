@@ -1,23 +1,29 @@
-import React from 'react';
+'use client';
 
 interface SectionHeaderProps {
   title: string;
   subtitle?: string;
-  className?: string;
+  centered?: boolean;
 }
 
-export const SectionHeader: React.FC<SectionHeaderProps> = ({ 
+export default function SectionHeader({ 
   title, 
-  subtitle,
-  className = '' 
-}) => {
+  subtitle, 
+  centered = true 
+}: SectionHeaderProps) {
   return (
-    <div className={`flex flex-col items-center text-center mb-12 ${className}`}>
-      <h2 className="text-4xl md:text-5xl font-bold text-[#D43A00] mb-4">{title}</h2>
-      <div className="w-24 h-1.5 bg-[#FFB800] rounded-full mb-6"></div>
+    <div className={`mb-10 ${centered ? 'text-center' : ''}`}>
+      <h2 className="text-3xl md:text-4xl font-bold mb-3">
+        <span className="relative inline-block">
+          {title}
+          <span className="absolute -bottom-1 left-0 w-full h-1 bg-[#D43A00]"></span>
+        </span>
+      </h2>
       {subtitle && (
-        <p className="text-[#005A8C] text-xl max-w-3xl">{subtitle}</p>
+        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          {subtitle}
+        </p>
       )}
     </div>
   );
-}; 
+} 

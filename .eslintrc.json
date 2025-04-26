@@ -1,0 +1,8 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "@typescript-eslint/no-unused-vars": ["error", { 
+      "varsIgnorePattern": "^about(Title|Subtitle|Description1|Description2|Images)$" 
+    }]
+  }
+} 

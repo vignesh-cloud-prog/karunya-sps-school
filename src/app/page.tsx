@@ -12,25 +12,30 @@ import './styles/focus-areas.css';
 import { useEffect, useState } from 'react';
 import { getTeamMembers } from '@/services/team';
 import { getReports } from '@/services/reports';
+import { getAboutContent } from '@/services/about';
 import { TeamMember } from '@/types/team';
 import { Report } from '@/types/reports';
+import { AboutContent } from '@/services/about';
 import ActivitiesSection from './components/ActivitiesSection';
 import Navbar from './components/Navbar';
 
 export default function Home() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [reports, setReports] = useState<Report[]>([]);
+  const [aboutContent, setAboutContent] = useState<AboutContent | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [members, reportsList] = await Promise.all([
+        const [members, reportsList, about] = await Promise.all([
           getTeamMembers(),
-          getReports()
+          getReports(),
+          getAboutContent()
         ]);
         setTeamMembers(members);
         setReports(reportsList);
+        setAboutContent(about);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {
@@ -41,16 +46,11 @@ export default function Home() {
     fetchData();
   }, []);
 
-  const aboutImages = [
-      {
-      src: '/planting.jpg',
-      alt: 'Planting trees'
-    },
-    {
-      src: '/about-image.jpg',
-      alt: 'Students at Karunya Special School'
-    }
-  ];
+  const aboutTitle = aboutContent?.title || 'About Us';
+  const aboutSubtitle = aboutContent?.subtitle || 'Karunya Special School';
+  const aboutDescription1 = aboutContent?.description1 || 'Our NGO believes that all children should be given equal opportunities and see that they grow up in a decent environment and become the proud citizens of the country.';
+  const aboutDescription2 = aboutContent?.description2 || 'Karunya Special School strives to rehabilitate the special children by training them to acquire special skill and lead an independent life. Special children include those with autism, mental retardation, down syndrome and slow learners.';
+  const aboutImages = aboutContent?.images || ['/planting.jpg', '/about-image.jpg'];
 
   const focusAreas = [
     {
@@ -104,9 +104,9 @@ export default function Home() {
           <div className="absolute inset-0 opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-12">
-              <h2 id="about-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">About Us</h2>
+              <h2 id="about-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">{aboutContent?.title || 'About Us'}</h2>
               <div className="w-24 h-1.5 bg-[#FFB800] rounded-full mb-6"></div>
-              <h3 className="text-3xl md:text-4xl text-[#0077BE]">Karunya Special School</h3>
+              <h3 className="text-3xl md:text-4xl text-[#0077BE]">{aboutContent?.subtitle || 'Karunya Special School'}</h3>
             </div>
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
@@ -122,12 +122,12 @@ export default function Home() {
                   loop={true}
                   className="h-full rounded-2xl about-slider"
                 >
-                  {aboutImages.map((image, index) => (
+                  {(aboutContent?.images || ['/planting.jpg', '/about-image.jpg']).map((image, index) => (
                     <SwiperSlide key={index}>
                       <div className="relative w-full h-full">
-        <Image
-                          src={image.src}
-                          alt={image.alt}
+                        <Image
+                          src={image}
+                          alt={`About image ${index + 1}`}
                           fill
                           className="object-cover transition-transform duration-300 hover:scale-105"
                         />
@@ -139,15 +139,15 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-gray-800 mb-6 leading-relaxed text-lg">
-                  Our NGO believes that all children should be given equal opportunities and see that they grow up in a decent environment and become the proud citizens of the country.
+                  {aboutContent?.description1 || 'Our NGO believes that all children should be given equal opportunities and see that they grow up in a decent environment and become the proud citizens of the country.'}
                 </p>
                 <p className="text-gray-800 leading-relaxed text-lg">
-                  Karunya Special School strives to rehabilitate the special children by training them to acquire special skill and lead an independent life. Special children include those with autism, mental retardation, down syndrome and slow learners.
+                  {aboutContent?.description2 || 'Karunya Special School strives to rehabilitate the special children by training them to acquire special skill and lead an independent life. Special children include those with autism, mental retardation, down syndrome and slow learners.'}
                 </p>
               </div>
             </div>
-        </div>
-      </section>
+          </div>
+        </section>
 
         {/* Vision & Mission Section */}
         <section aria-labelledby="vision-mission-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-[#FFB800]/10 to-white relative overflow-hidden">
@@ -429,7 +429,19 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {teamMembers.map((member, index) => (
                 <div key={index} className="flex items-start space-x-4 p-4 bg-white rounded-2xl shadow-md">
-                  <div className="w-24 h-24 bg-[#FFB800]/10 rounded-xl flex-shrink-0" />
+                  {member.image ? (
+                    <div className="w-24 h-24 rounded-xl flex-shrink-0 overflow-hidden">
+                      <Image 
+                        src={member.image} 
+                        alt={member.name} 
+                        width={96} 
+                        height={96} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-24 h-24 bg-[#FFB800]/10 rounded-xl flex-shrink-0" />
+                  )}
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
                     <p className="text-gray-600">{member.position}</p>

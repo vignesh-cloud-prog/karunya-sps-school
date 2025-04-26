@@ -1,0 +1,1 @@
+<p className="text-gray-600">&ldquo;The school has been a blessing for our family. The teachers are incredibly dedicated and the progress our child has made is remarkable.&rdquo;</p> 

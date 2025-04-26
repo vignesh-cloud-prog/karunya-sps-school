@@ -1,113 +1,183 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { getHighlights } from '@/services/highlights';
+import { getTeamMembers } from '@/services/team';
+import { getReports } from '@/services/reports';
+import { FiHome, FiActivity, FiUsers, FiFileText, FiInfo } from 'react-icons/fi';
 import Link from 'next/link';
 
-export default function AdminDashboard() {
-  const { user, loading } = useAuth();
+export default function AdminPage() {
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    highlights: 0,
+    teamMembers: 0,
+    reports: 0
+  });
 
   useEffect(() => {
-    // For debugging
-    console.log("Admin dashboard loaded, user:", user?.email, "loading:", loading);
-  }, [user, loading]);
+    const fetchData = async () => {
+      try {
+        const [highlights, teamMembers, reports] = await Promise.all([
+          getHighlights(),
+          getTeamMembers(),
+          getReports()
+        ]);
+        
+        setStats({
+          highlights: highlights.length,
+          teamMembers: teamMembers.length,
+          reports: reports.length
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (loading) {
+    fetchData();
+  }, []);
+
+  if (authLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF4B00]"></div>
       </div>
     );
   }
 
   if (!user) {
-    return null; // Will be redirected by AuthContext
+    router.push('/admin/login');
+    return null;
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF4B00]"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white p-6 rounded-xl shadow-lg"
-      >
-        <h1 className="text-2xl font-bold text-[#FF4B00] mb-2">Welcome to Admin Dashboard</h1>
-        <p className="text-gray-600">Logged in as: {user.email}</p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#FF4B00]"
-        >
-          <h2 className="text-lg font-medium text-gray-700 mb-3">Activities</h2>
-          <div className="flex items-center justify-between">
-            <p className="text-3xl font-bold text-[#FF4B00]">2</p>
-            <Link
-              href="/admin/activities"
-              className="px-4 py-2 bg-[#FF4B00] text-white rounded-lg hover:bg-[#FF4B00]/90 transition-colors"
-            >
-              Manage
-            </Link>
+    <div className="min-h-screen bg-gradient-to-b from-white to-[#FFB800]/10">
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex">
+              <div className="flex-shrink-0 flex items-center">
+                <FiHome className="h-6 w-6 text-[#FF4B00]" />
+                <span className="ml-2 text-xl font-semibold">Admin Dashboard</span>
+              </div>
+              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                <Link href="/admin/highlights" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
+                  <FiActivity className="h-5 w-5 mr-1" />
+                  Highlights
+                </Link>
+                <Link href="/admin/team" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
+                  <FiUsers className="h-5 w-5 mr-1" />
+                  Team
+                </Link>
+                <Link href="/admin/reports" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
+                  <FiFileText className="h-5 w-5 mr-1" />
+                  Reports
+                </Link>
+                <Link href="/admin/about" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
+                  <FiInfo className="h-5 w-5 mr-1" />
+                  About
+                </Link>
+              </div>
+            </div>
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-[#FFB800]"
-        >
-          <h2 className="text-lg font-medium text-gray-700 mb-3">Team Members</h2>
-          <div className="flex items-center justify-between">
-            <p className="text-3xl font-bold text-[#FFB800]">3</p>
-            <Link
-              href="/admin/team"
-              className="px-4 py-2 bg-[#FFB800] text-white rounded-lg hover:bg-[#FFB800]/90 transition-colors"
-            >
-              Manage
-            </Link>
-          </div>
-        </motion.div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="bg-white p-6 rounded-xl shadow-lg"
-      >
-        <h2 className="text-lg font-medium text-gray-700 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Link
-            href="/admin/activities"
-            className="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <div className="p-2 bg-[#FF4B00]/10 rounded-lg mr-4">
-              <span className="text-2xl text-[#FF4B00]">📋</span>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">Add Activity</h3>
-              <p className="text-sm text-gray-500">Create a new school activity</p>
-            </div>
-          </Link>
-          <Link
-            href="/admin/team"
-            className="flex items-center p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <div className="p-2 bg-[#FFB800]/10 rounded-lg mr-4">
-              <span className="text-2xl text-[#FFB800]">👥</span>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">Add Team Member</h3>
-              <p className="text-sm text-gray-500">Add a new staff member</p>
-            </div>
-          </Link>
         </div>
-      </motion.div>
+      </nav>
+
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Highlights Card */}
+            <Link href="/admin/highlights" className="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow">
+              <div className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-[#FF4B00]/10 p-3 rounded-md">
+                    <FiActivity className="h-6 w-6 text-[#FF4B00]" />
+                  </div>
+                  <div className="ml-5">
+                    <h3 className="text-lg font-medium text-gray-900">Highlights</h3>
+                    <p className="text-2xl font-semibold text-[#FF4B00]">{stats.highlights}</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Team Members Card */}
+            <Link href="/admin/team" className="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow">
+              <div className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-[#FF4B00]/10 p-3 rounded-md">
+                    <FiUsers className="h-6 w-6 text-[#FF4B00]" />
+                  </div>
+                  <div className="ml-5">
+                    <h3 className="text-lg font-medium text-gray-900">Team Members</h3>
+                    <p className="text-2xl font-semibold text-[#FF4B00]">{stats.teamMembers}</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Reports Card */}
+            <Link href="/admin/reports" className="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow">
+              <div className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-[#FF4B00]/10 p-3 rounded-md">
+                    <FiFileText className="h-6 w-6 text-[#FF4B00]" />
+                  </div>
+                  <div className="ml-5">
+                    <h3 className="text-lg font-medium text-gray-900">Reports</h3>
+                    <p className="text-2xl font-semibold text-[#FF4B00]">{stats.reports}</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="mt-8">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Link href="/admin/highlights/new" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                <div className="flex items-center">
+                  <FiActivity className="h-5 w-5 text-[#FF4B00] mr-2" />
+                  <span>Add New Highlight</span>
+                </div>
+              </Link>
+              <Link href="/admin/team/new" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                <div className="flex items-center">
+                  <FiUsers className="h-5 w-5 text-[#FF4B00] mr-2" />
+                  <span>Add Team Member</span>
+                </div>
+              </Link>
+              <Link href="/admin/reports/new" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                <div className="flex items-center">
+                  <FiFileText className="h-5 w-5 text-[#FF4B00] mr-2" />
+                  <span>Add New Report</span>
+                </div>
+              </Link>
+              <Link href="/admin/about" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                <div className="flex items-center">
+                  <FiInfo className="h-5 w-5 text-[#FF4B00] mr-2" />
+                  <span>Edit About Section</span>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 } 
