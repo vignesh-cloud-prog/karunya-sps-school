@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getTeamMembers, addTeamMember, updateTeamMember, deleteTeamMember } from '@/services/team';
 import { TeamMember, TeamFormData } from '@/types/team';
 import { storage } from '@/lib/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
+import Image from 'next/image';
 
 export default function TeamManagement() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
@@ -32,7 +33,7 @@ export default function TeamManagement() {
     try {
       const members = await getTeamMembers();
       setTeamMembers(members);
-    } catch (err) {
+    } catch {
       setError('Failed to fetch team members');
     } finally {
       setLoading(false);
@@ -89,8 +90,8 @@ export default function TeamManagement() {
       });
       setEditingMember(null);
       fetchTeamMembers();
-    } catch (err) {
-      setError('Failed to save team member');
+    } catch {
+      setError('Failed to add team member');
     } finally {
       setFormLoading(false);
     }
@@ -112,10 +113,17 @@ export default function TeamManagement() {
     if (!confirm('Are you sure you want to delete this team member?')) return;
 
     try {
-      await deleteTeamMember(id, imageRef);
+      // Delete the image first if it exists
+      if (imageRef) {
+        const imageRefObj = ref(storage, imageRef);
+        await deleteObject(imageRefObj);
+      }
+      
+      // Then delete the team member
+      await deleteTeamMember(id);
       setSuccess('Team member deleted successfully');
       fetchTeamMembers();
-    } catch (err) {
+    } catch {
       setError('Failed to delete team member');
     }
   };
@@ -236,9 +244,11 @@ export default function TeamManagement() {
               />
               {formData.image && (
                 <div className="mt-2">
-                  <img
+                  <Image
                     src={formData.image}
                     alt="Preview"
+                    width={128}
+                    height={128}
                     className="w-32 h-32 object-cover rounded-lg"
                   />
                 </div>
@@ -306,11 +316,14 @@ export default function TeamManagement() {
                   className="border rounded-lg p-4"
                 >
                   <div className="flex items-start space-x-4">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-16 h-16 object-cover rounded-lg"
-                    />
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover rounded-t-lg"
+                      />
+                    </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900">{member.name}</h3>
                       <p className="text-sm text-gray-500">{member.position}</p>

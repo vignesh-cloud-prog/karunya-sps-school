@@ -36,7 +36,16 @@ export async function addTeamMember(member: TeamFormData): Promise<void> {
 export async function updateTeamMember(id: string, member: TeamFormData): Promise<void> {
   try {
     const memberRef = doc(db, TEAM_COLLECTION, id);
-    await updateDoc(memberRef, member);
+    // Convert TeamFormData to a plain object for Firestore update
+    const updateData = {
+      name: member.name,
+      position: member.position,
+      description: member.description,
+      image: member.image,
+      imageRef: member.imageRef,
+      order: member.order,
+    };
+    await updateDoc(memberRef, updateData);
   } catch (error) {
     console.error('Error updating team member:', error);
     throw new Error('Failed to update team member');

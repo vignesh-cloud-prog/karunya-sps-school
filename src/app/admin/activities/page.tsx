@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Activity, ActivityFormData, addActivity, getActivities, updateActivity, deleteActivity, uploadImage, deleteImage } from '@/services/activities';
 import { motion, AnimatePresence } from 'framer-motion';
-import { v4 as uuidv4 } from 'uuid';
+import Image from 'next/image';
 
 export default function AdminActivities() {
   const { user, loading: authLoading } = useAuth();
@@ -302,11 +302,14 @@ export default function AdminActivities() {
                     className="border rounded-lg p-4"
                   >
                     <div className="flex items-start space-x-4">
-                      <img
-                        src={activity.image}
-                        alt={activity.title}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
+                      <div className="relative w-full h-48">
+                        <Image
+                          src={activity.image}
+                          alt={activity.title}
+                          fill
+                          className="object-cover rounded-t-lg"
+                        />
+                      </div>
                       <div className="flex-1">
                         <h3 className="font-medium text-gray-900">{activity.title}</h3>
                         <p className="text-sm text-gray-500">{activity.date}</p>

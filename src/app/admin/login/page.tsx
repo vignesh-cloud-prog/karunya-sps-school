@@ -39,20 +39,11 @@ export default function LoginPage() {
       
       // Force hard navigation to admin page
       window.location.href = '/admin';
-    } catch (error: any) {
-      console.error('Login error:', error);
-      
-      // Detailed error handling
-      if (error.code === 'auth/invalid-credential' || 
-          error.code === 'auth/invalid-email' || 
-          error.code === 'auth/wrong-password') {
-        setError('Invalid email or password');
-      } else if (error.code === 'auth/user-not-found') {
-        setError('User not found');
-      } else if (error.code === 'auth/too-many-requests') {
-        setError('Too many failed login attempts. Try again later');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
       } else {
-        setError('Login failed. Please try again.');
+        setError('An unknown error occurred');
       }
     } finally {
       setIsLoading(false);

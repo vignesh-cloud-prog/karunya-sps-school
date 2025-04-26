@@ -10,27 +10,25 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './styles/focus-areas.css';
 import { useEffect, useState } from 'react';
-import { Activity, getActivities } from '@/services/activities';
+import { getTeamMembers } from '@/services/team';
+import { TeamMember } from '@/types/team';
 import ActivitiesSection from './components/ActivitiesSection';
 import Navbar from './components/Navbar';
 
 export default function Home() {
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   useEffect(() => {
-    const loadActivities = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getActivities();
-        setActivities(data);
-      } catch (error) {
-        console.error('Error loading activities:', error);
-      } finally {
-        setLoading(false);
+        const members = await getTeamMembers();
+        setTeamMembers(members);
+      } catch {
+        console.error('Failed to fetch team members');
       }
     };
 
-    loadActivities();
+    fetchData();
   }, []);
 
   const aboutImages = [
@@ -419,22 +417,12 @@ export default function Home() {
               <h3 className="text-3xl font-bold text-[#0077BE] mb-8">Team Members</h3>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { name: 'Mrs Agnes Kunder', role: '' },
-                { name: 'Mr I Prabhakar Ammanna', role: '' },
-                { name: 'Mrs Cherishma D&apos;silva', role: '' },
-                { name: 'Mrs Jasmine Sneha Ammanna', role: '' },
-                { name: 'Mrs Renita Rajashree Jathanna', role: '' },
-                { name: 'Mrs Melina Manohar', role: '' },
-                { name: 'Mr Vasanth Shetty', role: '' },
-                { name: 'Dr. Surendra Shetty', role: '' },
-                { name: 'Mr Mohan Samuel', role: '' }
-              ].map((member, index) => (
+              {teamMembers.map((member, index) => (
                 <div key={index} className="flex items-start space-x-4 p-4 bg-white rounded-2xl shadow-md">
                   <div className="w-24 h-24 bg-[#FFB800]/10 rounded-xl flex-shrink-0" />
                   <div>
-                    <h4 className="text-xl font-semibold text-[#0077BE]">{member.name}</h4>
-                    <p className="text-gray-600">{member.role}</p>
+                    <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
+                    <p className="text-gray-600">{member.position}</p>
                   </div>
                 </div>
               ))}

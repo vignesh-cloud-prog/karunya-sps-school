@@ -50,7 +50,15 @@ export async function addActivity(activity: ActivityFormData): Promise<void> {
 export async function updateActivity(id: string, activity: ActivityFormData): Promise<void> {
   try {
     const activityRef = doc(db, 'activities', id);
-    await updateDoc(activityRef, activity);
+    // Convert ActivityFormData to a plain object for Firestore update
+    const updateData = {
+      title: activity.title,
+      description: activity.description,
+      date: activity.date,
+      image: activity.image,
+      imageRef: activity.imageRef,
+    };
+    await updateDoc(activityRef, updateData);
   } catch (error) {
     console.error('Error updating activity:', error);
     throw new Error('Failed to update activity');
