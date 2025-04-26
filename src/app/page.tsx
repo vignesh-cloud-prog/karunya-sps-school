@@ -9,8 +9,30 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './styles/focus-areas.css';
+import { useEffect, useState } from 'react';
+import { Activity, getActivities } from '@/services/activities';
+import ActivitiesSection from './components/ActivitiesSection';
+import Navbar from './components/Navbar';
 
 export default function Home() {
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadActivities = async () => {
+      try {
+        const data = await getActivities();
+        setActivities(data);
+      } catch (error) {
+        console.error('Error loading activities:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadActivities();
+  }, []);
+
   const aboutImages = [
       {
       src: '/planting.jpg',
@@ -63,6 +85,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
+              <Navbar />
+
       <Highlights />
 
       {/* Consistent section spacing and gradients */}
@@ -383,136 +407,7 @@ export default function Home() {
         </section>
 
         {/* Activities Section */}
-        <section id="activities" aria-labelledby="activities-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
-          <div className="absolute inset-0  opacity-5"></div>
-          <div className="max-w-7xl mx-auto relative">
-            <div className="flex flex-col items-center text-center mb-12">
-              <h2 id="activities-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Our Activities</h2>
-              <div className="w-24 h-1.5 bg-[#FFB800] rounded-full mb-6"></div>
-            </div>
-            <div className="relative pb-16">
-              <Swiper
-                modules={[Navigation, Pagination, Autoplay]}
-                spaceBetween={24}
-                slidesPerView={1}
-                breakpoints={{
-                  640: {
-                    slidesPerView: 2,
-                  },
-                  1024: {
-                    slidesPerView: 3,
-                  },
-                }}
-                pagination={{ 
-                  clickable: true,
-                  el: '.activities-pagination',
-                  bulletClass: 'swiper-pagination-bullet',
-                  bulletActiveClass: 'swiper-pagination-bullet-active'
-                }}
-                autoplay={{ 
-                  delay: 3000,
-                  disableOnInteraction: false 
-                }}
-                loop={true}
-                className="activities-slider"
-              >
-                {[
-                  {
-                    date: '26-Jan-2024',
-                    image: '/republic-day.jpg',
-                    title: 'Republic Day',
-                    description: 'Karunya Special School vibrated with patriotic spirit on Republic Day. Students, teachers, and staff, a united mosaic, stood tall as the tricolor unfurled against the morning sky. Cultural performances showcased our rich heritage, while special children demonstrated their unique talents, embodying the true spirit of our diverse nation.'
-                  },
-                  {
-                    date: '12-Jan-2024',
-                    image: '/swachh-bharat.jpg',
-                    title: 'Swachh Bharat Abhiyaan',
-                    description: 'Karunya Special School embraced its civic duty on January 12th, joining the Swachh Bharat Abhiyaan with boundless enthusiasm. Our special children, alongside teachers and volunteers, participated in cleaning activities, learning valuable lessons about environmental responsibility and community service.'
-                  },
-                  {
-                    date: '03-Dec-2023',
-                    image: '/disability-day.jpg',
-                    title: 'World Disability Day',
-                    description: 'Karunya Special School resonated with inclusivity on World Disability Day. Engaging programs celebrated unique abilities, featuring inspiring performances by our students. The day highlighted our commitment to creating an inclusive world where every individual&apos;s potential is recognized and celebrated.'
-                  },
-                  {
-                    date: '14-Nov-2023',
-                    image: '/childrens-day.jpg',
-                    title: 'Children&apos;s Day',
-                    description: 'A joyous celebration marked Children&apos;s Day at Karunya Special School. The day was filled with fun activities, games, and special performances by our students. Teachers organized entertaining programs, making it a memorable day for all our special children.'
-                  },
-
-                  {
-                    date: '15-Aug-2023',
-                    image: '/independence-day.jpg',
-                    title: 'Independence Day',
-                    description: 'Independence Day at Karunya Special School was a grand celebration of freedom and unity. The event featured patriotic songs, dances, and cultural programs performed by our talented students, showcasing their abilities and national pride.'
-                  }
-                ].map((activity, index) => (
-                  <SwiperSlide key={index}>
-                    <article className="bg-white rounded-xl overflow-hidden h-full flex flex-col transform hover:-translate-y-1 transition-all duration-300 group">
-                      <div className="relative h-32 md:h-40 overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10"></div>
-              <Image
-                          src={activity.image}
-                          alt={activity.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                        <time className="absolute bottom-3 left-4 text-white z-20 flex items-center text-sm bg-black/30 px-3 py-1 rounded-full backdrop-blur-sm">
-                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                          {activity.date}
-                        </time>
-                      </div>
-                      <div className="p-4 flex-grow flex flex-col">
-                        <h3 className="text-lg font-bold text-[#0077BE] mb-2 group-hover:text-[#FF4B00] transition-colors line-clamp-1">
-                          {activity.title}
-                        </h3>
-                        <div className="text-gray-600 text-sm leading-relaxed">
-                          {activity.description.length > 120 ? (
-                            <>
-                              <p className="line-clamp-3">{activity.description.slice(0, 120)}...</p>
-                              <button 
-                                onClick={() => {
-                                  const modal = document.createElement('div');
-                                  modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50';
-                                  modal.innerHTML = `
-                                    <div class="bg-white rounded-xl p-6 max-w-lg w-full max-h-[80vh] overflow-y-auto">
-                                      <h3 class="text-xl font-bold text-[#0077BE] mb-4">${activity.title}</h3>
-                                      <p class="text-gray-600 mb-6">${activity.description}</p>
-                                      <button class="text-[#FF4B00] hover:text-[#0077BE] transition-colors font-medium">Close</button>
-                                    </div>
-                                  `;
-                                  document.body.appendChild(modal);
-                                  modal.querySelector('button')?.addEventListener('click', () => modal.remove());
-                                  modal.addEventListener('click', (e) => {
-                                    if (e.target === modal) modal.remove();
-                                  });
-                                }}
-                                className="text-[#FF4B00] hover:text-[#0077BE] transition-colors mt-2 text-sm font-medium inline-flex items-center group/btn"
-                              >
-                                Read more
-                                <svg className="w-4 h-4 ml-1 transform transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                </svg>
-                              </button>
-                            </>
-                          ) : (
-                            <p className="line-clamp-3">{activity.description}</p>
-                          )}
-                        </div>
-              </div>
-                    </article>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-              <div className="activities-pagination flex justify-center items-center mt-8" />
-            </div>
-          </div>
-        </section>
+        <ActivitiesSection />
 
         {/* Members Section */}
         <section id="members" aria-labelledby="members-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">

@@ -1,17 +1,14 @@
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
-import  Navbar  from './components/Navbar';
-import { Poppins } from 'next/font/google';
+import { AuthProvider } from '@/context/AuthContext';
+import RequireAuth from '@/components/RequireAuth';
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-poppins',
-});
+const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
-  title: 'Karunya Special School',
-  description: 'Empowering specially aided children with quality education and care in Malpe, Karnataka.',
+export const metadata: Metadata = {
+  title: 'Karunya SPS School',
+  description: 'Karunya SPS School - Empowering Future Leaders',
 };
 
 export default function RootLayout({
@@ -20,13 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable}`}>
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className="font-poppins antialiased bg-white text-gray-600">
-        <Navbar />
-        {children}
+      <body className={inter.className}>
+        <AuthProvider>
+          <RequireAuth>
+            {children}
+          </RequireAuth>
+        </AuthProvider>
       </body>
     </html>
   );

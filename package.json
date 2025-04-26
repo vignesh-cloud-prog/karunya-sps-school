@@ -9,13 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@firebase/auth": "^1.10.0",
+    "@firebase/firestore": "^4.7.10",
+    "@firebase/storage": "^0.13.7",
     "@heroicons/react": "^2.2.0",
+    "@types/js-cookie": "^3.0.6",
+    "@types/uuid": "^10.0.0",
+    "firebase": "^11.6.0",
     "framer-motion": "^12.6.3",
+    "js-cookie": "^3.0.5",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.16.0",
-    "swiper": "^11.2.6"
+    "swiper": "^11.2.6",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
