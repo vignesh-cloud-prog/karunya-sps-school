@@ -304,7 +304,7 @@ export default function AdminActivities() {
                     <div className="flex items-start space-x-4">
                       <div className="relative w-full h-48">
                         <Image
-                          src={activity.image}
+                          src={activity.image || '/placeholder-activity.jpg'}
                           alt={activity.title}
                           fill
                           className="object-cover rounded-t-lg"

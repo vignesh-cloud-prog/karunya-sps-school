@@ -11,20 +11,30 @@ import 'swiper/css/pagination';
 import './styles/focus-areas.css';
 import { useEffect, useState } from 'react';
 import { getTeamMembers } from '@/services/team';
+import { getReports } from '@/services/reports';
 import { TeamMember } from '@/types/team';
+import { Report } from '@/types/reports';
 import ActivitiesSection from './components/ActivitiesSection';
 import Navbar from './components/Navbar';
 
 export default function Home() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const members = await getTeamMembers();
+        const [members, reportsList] = await Promise.all([
+          getTeamMembers(),
+          getReports()
+        ]);
         setTeamMembers(members);
-      } catch {
-        console.error('Failed to fetch team members');
+        setReports(reportsList);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -438,8 +448,24 @@ export default function Home() {
               <h2 id="reports-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Reports</h2>
               <div className="w-24 h-1.5 bg-[#FFB800] rounded-full mb-6"></div>
             </div>
+            {loading ? (
+              <div className="grid md:grid-cols-2 gap-8">
+                {[1, 2].map((i) => (
+                  <div key={i} className="bg-white p-8 rounded-2xl shadow-lg animate-pulse">
+                    <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full mb-6"></div>
+                    <div className="h-10 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                ))}
+              </div>
+            ) : reports.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No reports available at the moment</p>
+              </div>
+            ) : (
             <div className="grid md:grid-cols-2 gap-8">
-              <article className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[#FFB800]/20">
+                {reports.map((report) => (
+                  <article key={report.id} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-[#FFB800]/20">
                 <div className="flex items-start space-x-6">
                   <div className="flex-shrink-0">
                     <svg className="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -447,10 +473,10 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-[#0077BE] mb-4">Annual Report</h3>
-                    <p className="text-gray-700 mb-6">Access our annual report to learn about our achievements, impact, and financial transparency.</p>
+                        <h3 className="text-2xl font-bold text-[#0077BE] mb-4">{report.title}</h3>
+                        <p className="text-gray-700 mb-6">{report.description}</p>
                     <Link 
-                      href="/annual-report.pdf"
+                          href={report.fileUrl}
                       className="inline-flex items-center space-x-2 text-[#FF4B00] hover:text-[#0077BE] transition-colors"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -463,7 +489,9 @@ export default function Home() {
                   </div>
                 </div>
               </article>
+                ))}
             </div>
+            )}
           </div>
         </section>
 

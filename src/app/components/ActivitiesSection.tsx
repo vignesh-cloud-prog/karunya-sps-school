@@ -9,6 +9,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function ActivitiesSection() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -16,19 +17,20 @@ export default function ActivitiesSection() {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
 
   useEffect(() => {
-    loadActivities();
-  }, []);
+    const fetchActivities = async () => {
+      try {
+        const activitiesList = await getActivities();
+        // Get only the first 3 activities for the home page
+        setActivities(activitiesList.slice(0, 3));
+      } catch (error) {
+        console.error('Failed to fetch activities:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const loadActivities = async () => {
-    try {
-      const data = await getActivities();
-      setActivities(data);
-    } catch (error) {
-      console.error('Error loading activities:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchActivities();
+  }, []);
 
   if (loading) {
     return (
@@ -68,9 +70,11 @@ export default function ActivitiesSection() {
       <div className="absolute inset-0 opacity-5"></div>
       <div className="max-w-7xl mx-auto relative">
         <div className="flex flex-col items-center text-center mb-12">
-          <h2 id="activities-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Our Activities</h2>
+          <h2 id="activities-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Activities</h2>
           <div className="w-24 h-1.5 bg-[#FFB800] rounded-full mb-6"></div>
+          <p className="text-[#0077BE] text-xl max-w-3xl">Discover our latest activities and events</p>
         </div>
+
         <div className="relative pb-16">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
@@ -107,7 +111,7 @@ export default function ActivitiesSection() {
                 >
                   <div className="relative h-48">
                     <Image
-                      src={activity.image}
+                      src={activity.image || '/placeholder-activity.jpg'}
                       alt={activity.title}
                       fill
                       className="object-cover"
@@ -136,6 +140,18 @@ export default function ActivitiesSection() {
           </Swiper>
           <div className="activities-pagination flex justify-center items-center mt-8" />
         </div>
+
+        <div className="text-center mt-12">
+          <Link 
+            href="/activities"
+            className="inline-flex items-center px-8 py-3 bg-[#FF4B00] text-white rounded-xl font-semibold hover:bg-[#0077BE] transition-all duration-300 group"
+          >
+            View All Activities
+            <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </div>
       </div>
 
       {/* Modal for full description */}
@@ -144,7 +160,7 @@ export default function ActivitiesSection() {
           <div className="bg-white rounded-lg max-w-2xl w-full p-6">
             <div className="relative h-64 mb-4">
               <Image
-                src={selectedActivity.image}
+                src={selectedActivity.image || '/placeholder-activity.jpg'}
                 alt={selectedActivity.title}
                 fill
                 className="object-cover rounded-lg"
