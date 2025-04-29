@@ -7,6 +7,7 @@ import { getHighlights } from '@/services/highlights';
 import { getTeamMembers } from '@/services/team';
 import { getReports } from '@/services/reports';
 import { getPrograms } from '@/services/programs';
+import { getVolunteers } from '@/services/volunteers';
 import { FiHome, FiActivity, FiUsers, FiFileText, FiInfo, FiBook } from 'react-icons/fi';
 import Link from 'next/link';
 
@@ -18,24 +19,27 @@ export default function AdminPage() {
     highlights: 0,
     teamMembers: 0,
     reports: 0,
-    programs: 0
+    programs: 0,
+    volunteers: 0
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [highlights, teamMembers, reports, programs] = await Promise.all([
+        const [highlights, teamMembers, reports, programs, volunteers] = await Promise.all([
           getHighlights(),
           getTeamMembers(),
           getReports(),
-          getPrograms()
+          getPrograms(),
+          getVolunteers()
         ]);
         
         setStats({
           highlights: highlights.length,
           teamMembers: teamMembers.length,
           reports: reports.length,
-          programs: programs.length
+          programs: programs.length,
+          volunteers: volunteers.length
         });
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -90,6 +94,10 @@ export default function AdminPage() {
                 <Link href="/admin/team" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
                   <FiUsers className="h-5 w-5 mr-1" />
                   Team
+                </Link>
+                <Link href="/admin/volunteers" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
+                  <FiUsers className="h-5 w-5 mr-1" />
+                  Volunteers
                 </Link>
                 <Link href="/admin/reports" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
                   <FiFileText className="h-5 w-5 mr-1" />
@@ -153,6 +161,21 @@ export default function AdminPage() {
               </div>
             </Link>
 
+            {/* Volunteers Card */}
+            <Link href="/admin/volunteers" className="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow">
+              <div className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-[#FF4B00]/10 p-3 rounded-md">
+                    <FiUsers className="h-6 w-6 text-[#FF4B00]" />
+                  </div>
+                  <div className="ml-5">
+                    <h3 className="text-lg font-medium text-gray-900">Volunteers</h3>
+                    <p className="text-2xl font-semibold text-[#FF4B00]">{stats.volunteers}</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
             {/* Reports Card */}
             <Link href="/admin/reports" className="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow">
               <div className="p-6">
@@ -189,6 +212,12 @@ export default function AdminPage() {
                 <div className="flex items-center">
                   <FiUsers className="h-5 w-5 text-[#FF4B00] mr-2" />
                   <span>Add Team Member</span>
+                </div>
+              </Link>
+              <Link href="/admin/volunteers" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                <div className="flex items-center">
+                  <FiUsers className="h-5 w-5 text-[#FF4B00] mr-2" />
+                  <span>View Volunteer Applications</span>
                 </div>
               </Link>
               <Link href="/admin/reports/new" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">

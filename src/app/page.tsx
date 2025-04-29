@@ -13,9 +13,11 @@ import { useEffect, useState } from 'react';
 import { getTeamMembers } from '@/services/team';
 import { getReports } from '@/services/reports';
 import { getAboutContent } from '@/services/about';
+import { addVolunteer } from '@/services/volunteers';
 import { TeamMember } from '@/types/team';
 import { Report } from '@/types/reports';
 import { AboutContent } from '@/services/about';
+import { VolunteerFormData } from '@/types/volunteers';
 import ActivitiesSection from './components/ActivitiesSection';
 import Navbar from './components/Navbar';
 import { getPrograms } from '@/services/programs';
@@ -27,6 +29,15 @@ export default function Home() {
   const [aboutContent, setAboutContent] = useState<AboutContent | null>(null);
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
+  const [volunteerForm, setVolunteerForm] = useState<VolunteerFormData>({
+    name: '',
+    email: '',
+    phone: '',
+    location: '',
+    message: ''
+  });
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [formError, setFormError] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,6 +111,43 @@ export default function Home() {
       description: 'Ensuring safety and well-being of every child'
     }
   ];
+
+  // Handle volunteer form changes
+  const handleVolunteerChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setVolunteerForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle volunteer form submission
+  const handleVolunteerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus('loading');
+    setFormError('');
+
+    try {
+      await addVolunteer(volunteerForm);
+      setFormStatus('success');
+      // Reset form after successful submission
+      setVolunteerForm({
+        name: '',
+        email: '',
+        phone: '',
+        location: '',
+        message: ''
+      });
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setFormStatus('idle');
+      }, 5000);
+    } catch (error) {
+      console.error('Error submitting volunteer form:', error);
+      setFormStatus('error');
+      setFormError('There was an error submitting your application. Please try again later.');
+    }
+  };
 
   return (
     <main className="min-h-screen">
@@ -489,53 +537,93 @@ export default function Home() {
               <p className="text-xl mb-8 text-gray-800">
                 Volunteer with us for making a difference in somebody&apos;s life and also it is a good opportunity for you to give back to the society. For more information, mail us at karunyaspschool@gmail.com
               </p>
-              <form className="space-y-6">
-                <div>
-                  <input 
-                    type="text" 
-                    placeholder="Name *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
-                    required 
-                  />
+              
+              {formStatus === 'success' ? (
+                <div className="bg-green-50 border border-green-200 text-green-800 rounded-xl p-6 mb-8">
+                  <h3 className="text-xl font-semibold mb-2">Thank you for your interest!</h3>
+                  <p>Your volunteer application has been submitted successfully. We will contact you soon.</p>
                 </div>
-                <div>
-                  <input 
-                    type="email" 
-                    placeholder="Email *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
-                    required 
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <input 
-                    type="tel" 
-                    placeholder="Phone *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
-                    required 
-                  />
-                  <input 
-                    type="text" 
-                    placeholder="Location *" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
-                    required 
-                  />
-                </div>
-                <div>
-                  <textarea 
-                    placeholder="Message" 
-                    className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none h-32 text-gray-900"
-                  ></textarea>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="g-recaptcha"></div>
-                  <button 
-                    type="submit" 
-                    className="bg-[#FF4B00] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#0077BE] transition-colors"
-                  >
-                    GET INVOLVED
-              </button>
-                </div>
-              </form>
+              ) : (
+                <form onSubmit={handleVolunteerSubmit} className="space-y-6">
+                  <div>
+                    <input 
+                      type="text" 
+                      name="name"
+                      value={volunteerForm.name}
+                      onChange={handleVolunteerChange}
+                      placeholder="Name *" 
+                      className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <input 
+                      type="email" 
+                      name="email"
+                      value={volunteerForm.email}
+                      onChange={handleVolunteerChange}
+                      placeholder="Email *" 
+                      className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
+                      required 
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input 
+                      type="tel" 
+                      name="phone"
+                      value={volunteerForm.phone}
+                      onChange={handleVolunteerChange}
+                      placeholder="Phone *" 
+                      className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
+                      required 
+                    />
+                    <input 
+                      type="text" 
+                      name="location"
+                      value={volunteerForm.location}
+                      onChange={handleVolunteerChange}
+                      placeholder="Location *" 
+                      className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none text-gray-900" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <textarea 
+                      name="message"
+                      value={volunteerForm.message}
+                      onChange={handleVolunteerChange}
+                      placeholder="Message" 
+                      className="w-full p-4 rounded-xl border border-[#FFB800]/20 focus:border-[#0077BE] focus:ring-2 focus:ring-[#0077BE]/20 outline-none h-32 text-gray-900"
+                    ></textarea>
+                  </div>
+                  
+                  {formError && (
+                    <div className="text-red-600 text-sm">
+                      {formError}
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-end">
+                    <button 
+                      type="submit" 
+                      disabled={formStatus === 'loading'}
+                      className={`bg-[#FF4B00] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#0077BE] transition-colors ${
+                        formStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      {formStatus === 'loading' ? (
+                        <span className="flex items-center">
+                          <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          PROCESSING...
+                        </span>
+                      ) : 'GET INVOLVED'}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </section>

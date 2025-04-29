@@ -14,6 +14,7 @@ const menuItems = [
   { name: 'Programs', href: '/admin/programs', icon: FiBook },
   { name: 'Activities', href: '/admin/activities', icon: FiActivity },
   { name: 'Team', href: '/admin/team', icon: FiUsers },
+  { name: 'Volunteers', href: '/admin/volunteers', icon: FiUsers },
   { name: 'Reports', href: '/admin/reports', icon: FiFileText },
   { name: 'Settings', href: '/admin/settings', icon: FiSettings },
 ];
