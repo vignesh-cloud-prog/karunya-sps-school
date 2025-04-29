@@ -18,24 +18,29 @@ import { Report } from '@/types/reports';
 import { AboutContent } from '@/services/about';
 import ActivitiesSection from './components/ActivitiesSection';
 import Navbar from './components/Navbar';
+import { getPrograms } from '@/services/programs';
+import { Program } from '@/services/programs';
 
 export default function Home() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [reports, setReports] = useState<Report[]>([]);
   const [aboutContent, setAboutContent] = useState<AboutContent | null>(null);
+  const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [members, reportsList, about] = await Promise.all([
+        const [members, reportsList, about, programsList] = await Promise.all([
           getTeamMembers(),
           getReports(),
-          getAboutContent()
+          getAboutContent(),
+          getPrograms()
         ]);
         setTeamMembers(members);
         setReports(reportsList);
         setAboutContent(about);
+        setPrograms(programsList);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {
@@ -51,6 +56,11 @@ export default function Home() {
   const aboutDescription1 = aboutContent?.description1 || 'Our NGO believes that all children should be given equal opportunities and see that they grow up in a decent environment and become the proud citizens of the country.';
   const aboutDescription2 = aboutContent?.description2 || 'Karunya Special School strives to rehabilitate the special children by training them to acquire special skill and lead an independent life. Special children include those with autism, mental retardation, down syndrome and slow learners.';
   const aboutImages = aboutContent?.images || ['/planting.jpg', '/about-image.jpg'];
+
+  // Get current academic year
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
+  const academicYear = `${currentYear}-${nextYear}`;
 
   const focusAreas = [
     {
@@ -241,7 +251,7 @@ export default function Home() {
 
         {/* Programs Section */}
         <section id="programs" aria-labelledby="programs-title" className="py-20 md:py-28 px-4 bg-gradient-to-b from-white to-[#FFB800]/10 relative overflow-hidden">
-          <div className="absolute inset-0  opacity-5"></div>
+          <div className="absolute inset-0 opacity-5"></div>
           <div className="max-w-7xl mx-auto relative">
             <div className="flex flex-col items-center text-center mb-16">
               <h2 id="programs-title" className="text-4xl md:text-5xl font-bold text-[#FF4B00] mb-4">Programs</h2>
@@ -250,137 +260,38 @@ export default function Home() {
             </div>
 
             <div className="space-y-8">
-              {/* Education Program */}
-              <article className="bg-white rounded-xl overflow-hidden transform transition-all duration-300 hover:shadow-xl group">
-                <div className="grid md:grid-cols-12 gap-0">
-                  <div className="relative h-[280px] md:h-[320px] md:col-span-5 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-10"></div>
-                    <Image
-                      src="/education.jpeg"
-                      alt="Students participating in yoga class"
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 40vw"
-                      priority
-                    />
+              {programs.map((program) => (
+                <article key={program.id} className="bg-white rounded-xl overflow-hidden transform transition-all duration-300 hover:shadow-xl group">
+                  <div className="grid md:grid-cols-12 gap-0">
+                    <div className="relative h-[280px] md:h-[320px] md:col-span-5 overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-10"></div>
+                      <Image
+                        src={program.image}
+                        alt={program.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 40vw"
+                        priority
+                      />
+                    </div>
+                    <div className="p-6 md:p-8 md:col-span-7 flex flex-col justify-center">
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
+                        {program.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        {program.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-6 md:p-8 md:col-span-7 flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
-                      Education for Specially Aided Children
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      Karunya Special School strives to rehabilitate the special children by training them to acquire special skill and lead an independent life. We are providing them the atmosphere such that they learn and participate in the society equipped with necessary knowledge and cultural activities.
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Birthday Celebration */}
-              <article className="bg-white rounded-xl overflow-hidden transform transition-all duration-300 hover:shadow-xl group">
-                <div className="grid md:grid-cols-12 gap-0">
-                  <div className="relative h-[280px] md:h-[320px] md:col-span-5 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-10"></div>
-                    <Image
-                      src="/birthday.jpg"
-                      alt="Birthday celebration at school"
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 40vw"
-                      priority
-                    />
-                  </div>
-                  <div className="p-6 md:p-8 md:col-span-7 flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
-                      Birthday Celebration
-                    </h3>
-                    <p className="text-gray-800 leading-relaxed">
-                      Karunya special school celebrated well wisher&apos;s birthday. Students, teachers, and staff, a vibrant tapestry of well-wishers, surrounded the guest of honor. Cake slices, shared with warmth and smiles, cemented the joyous occasion.
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Skating Class */}
-              <article className="bg-white rounded-xl overflow-hidden transform transition-all duration-300 hover:shadow-xl group">
-                <div className="grid md:grid-cols-12 gap-0">
-                  <div className="relative h-[280px] md:h-[320px] md:col-span-5 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-10"></div>
-                    <Image
-                      src="/skating.jpg"
-                      alt="Students learning skating"
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 40vw"
-                      priority
-                    />
-                  </div>
-                  <div className="p-6 md:p-8 md:col-span-7 flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
-                      Skating Class
-                    </h3>
-                    <p className="text-gray-800 leading-relaxed">
-                      Wheels whiz, laughter rings - Karunya&apos;s rink celebrates joy on blades. Skates empower each child&apos;s journey, from wobbly starts to graceful turns. Inclusion rolls forward, one joyful stride at a time.
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Exercise Program */}
-              <article className="bg-white rounded-xl overflow-hidden transform transition-all duration-300 hover:shadow-xl group">
-                <div className="grid md:grid-cols-12 gap-0">
-                  <div className="relative h-[280px] md:h-[320px] md:col-span-5 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-10"></div>
-                    <Image
-                      src="/exercise.jpg"
-                      alt="Students doing exercise"
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 40vw"
-                      priority
-                    />
-                  </div>
-                  <div className="p-6 md:p-8 md:col-span-7 flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
-                      Exercise for Students
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      Sunlight streams as Karunya starts to move. Gentle stretches wake young minds and bodies. Music lifts spirits, laughter fills the air. Exercises designed with care, build strength and smiles, side-by-side. Each move, a victory, celebrated with pride.
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Cycling Program */}
-              <article className="bg-white rounded-xl overflow-hidden transform transition-all duration-300 hover:shadow-xl group">
-                <div className="grid md:grid-cols-12 gap-0">
-                  <div className="relative h-[280px] md:h-[320px] md:col-span-5 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-10"></div>
-              <Image
-                      src="/cycling.jpg"
-                      alt="Students learning cycling"
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 40vw"
-                      priority
-                    />
-                  </div>
-                  <div className="p-6 md:p-8 md:col-span-7 flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
-                      Cycling
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      Two wheels and endless smiles! Karunya kids cycle free, joy in every turn. Inclusion rolls, spirits high, sunshine paints their laughter&apos;s sky.
-                    </p>
-              </div>
-            </div>
-              </article>
+                </article>
+              ))}
 
               {/* Admissions */}
               <article className="bg-white rounded-xl overflow-hidden transform transition-all duration-300 hover:shadow-xl group">
                 <div className="grid md:grid-cols-12 gap-0">
                   <div className="relative h-[280px] md:h-[320px] md:col-span-5 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-10"></div>
-              <Image
+                    <Image
                       src="/school-front.jpg"
                       alt="Karunya Special School building"
                       fill
@@ -392,13 +303,13 @@ export default function Home() {
                   <div className="p-6 md:p-8 md:col-span-7 flex flex-col justify-center">
                     <div className="flex flex-col">
                       <h3 className="text-2xl md:text-3xl font-bold text-[#0077BE] mb-4 group-hover:text-[#FF4B00] transition-colors">
-                        Admission Open for 2024-25
+                        Admission Open for {academicYear}
                       </h3>
                       <p className="text-gray-600 leading-relaxed mb-6">
-                        Admissions are now open for the academic year 2024-25 at Kaurnya Special School. Known for its commitment to providing quality education and specialized care for individuals with diverse learning needs, Kaurnya Special School offers a supportive and inclusive environment.
+                        Admissions are now open for the academic year {academicYear} at Kaurnya Special School. Known for its commitment to providing quality education and specialized care for individuals with diverse learning needs, Kaurnya Special School offers a supportive and inclusive environment.
                       </p>
                       <Link 
-                        href="/contact"
+                        href="#contact"
                         className="inline-flex items-center px-6 py-3 bg-[#FF4B00] text-white rounded-lg font-semibold hover:bg-[#0077BE] transition-all duration-300 group-hover:translate-x-2 w-fit"
                       >
                         Apply Now
@@ -411,7 +322,7 @@ export default function Home() {
                 </div>
               </article>
             </div>
-              </div>
+          </div>
         </section>
 
         {/* Activities Section */}

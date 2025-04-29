@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { getHighlights } from '@/services/highlights';
 import { getTeamMembers } from '@/services/team';
 import { getReports } from '@/services/reports';
-import { FiHome, FiActivity, FiUsers, FiFileText, FiInfo } from 'react-icons/fi';
+import { getPrograms } from '@/services/programs';
+import { FiHome, FiActivity, FiUsers, FiFileText, FiInfo, FiBook } from 'react-icons/fi';
 import Link from 'next/link';
 
 export default function AdminPage() {
@@ -16,22 +17,25 @@ export default function AdminPage() {
   const [stats, setStats] = useState({
     highlights: 0,
     teamMembers: 0,
-    reports: 0
+    reports: 0,
+    programs: 0
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [highlights, teamMembers, reports] = await Promise.all([
+        const [highlights, teamMembers, reports, programs] = await Promise.all([
           getHighlights(),
           getTeamMembers(),
-          getReports()
+          getReports(),
+          getPrograms()
         ]);
         
         setStats({
           highlights: highlights.length,
           teamMembers: teamMembers.length,
-          reports: reports.length
+          reports: reports.length,
+          programs: programs.length
         });
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -79,6 +83,10 @@ export default function AdminPage() {
                   <FiActivity className="h-5 w-5 mr-1" />
                   Highlights
                 </Link>
+                <Link href="/admin/programs" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
+                  <FiBook className="h-5 w-5 mr-1" />
+                  Programs
+                </Link>
                 <Link href="/admin/team" className="flex items-center px-1 pt-1 text-gray-900 hover:text-[#FF4B00]">
                   <FiUsers className="h-5 w-5 mr-1" />
                   Team
@@ -99,7 +107,7 @@ export default function AdminPage() {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Highlights Card */}
             <Link href="/admin/highlights" className="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow">
               <div className="p-6">
@@ -110,6 +118,21 @@ export default function AdminPage() {
                   <div className="ml-5">
                     <h3 className="text-lg font-medium text-gray-900">Highlights</h3>
                     <p className="text-2xl font-semibold text-[#FF4B00]">{stats.highlights}</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Programs Card */}
+            <Link href="/admin/programs" className="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow">
+              <div className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-[#FF4B00]/10 p-3 rounded-md">
+                    <FiBook className="h-6 w-6 text-[#FF4B00]" />
+                  </div>
+                  <div className="ml-5">
+                    <h3 className="text-lg font-medium text-gray-900">Programs</h3>
+                    <p className="text-2xl font-semibold text-[#FF4B00]">{stats.programs}</p>
                   </div>
                 </div>
               </div>
@@ -156,6 +179,12 @@ export default function AdminPage() {
                   <span>Add New Highlight</span>
                 </div>
               </Link>
+              <Link href="/admin/programs" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                <div className="flex items-center">
+                  <FiBook className="h-5 w-5 text-[#FF4B00] mr-2" />
+                  <span>Manage Programs</span>
+                </div>
+              </Link>
               <Link href="/admin/team/new" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
                 <div className="flex items-center">
                   <FiUsers className="h-5 w-5 text-[#FF4B00] mr-2" />
@@ -166,12 +195,6 @@ export default function AdminPage() {
                 <div className="flex items-center">
                   <FiFileText className="h-5 w-5 text-[#FF4B00] mr-2" />
                   <span>Add New Report</span>
-                </div>
-              </Link>
-              <Link href="/admin/about" className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                <div className="flex items-center">
-                  <FiInfo className="h-5 w-5 text-[#FF4B00] mr-2" />
-                  <span>Edit About Section</span>
                 </div>
               </Link>
             </div>

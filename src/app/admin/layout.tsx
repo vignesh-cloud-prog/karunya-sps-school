@@ -5,12 +5,13 @@ import { useAuth } from '@/context/AuthContext';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiHome, FiActivity, FiUsers, FiMenu, FiX, FiLogOut, FiFileText, FiStar, FiUser, FiSettings, FiInfo } from 'react-icons/fi';
+import { FiHome, FiActivity, FiUsers, FiMenu, FiX, FiLogOut, FiFileText, FiStar, FiUser, FiSettings, FiInfo, FiBook } from 'react-icons/fi';
 
 const menuItems = [
   { name: 'Dashboard', href: '/admin', icon: FiHome },
   { name: 'Highlights', href: '/admin/highlights', icon: FiStar },
   { name: 'About', href: '/admin/about', icon: FiInfo },
+  { name: 'Programs', href: '/admin/programs', icon: FiBook },
   { name: 'Activities', href: '/admin/activities', icon: FiActivity },
   { name: 'Team', href: '/admin/team', icon: FiUsers },
   { name: 'Reports', href: '/admin/reports', icon: FiFileText },

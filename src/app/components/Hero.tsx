@@ -7,43 +7,69 @@ import { getHighlights, Highlight } from '../../services/highlights';
 const Highlights = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState<Highlight[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHighlights = async () => {
-      const highlights = await getHighlights();
-      setSlides(highlights);
+      try {
+        const highlights = await getHighlights();
+        // Filter out any highlights with empty image URLs or provide a default
+        const validHighlights = highlights.map(highlight => ({
+          ...highlight,
+          image: highlight.image || '/hero-1.jpg' // Use an existing image as fallback
+        }));
+        setSlides(validHighlights.length > 0 ? validHighlights : defaultSlides);
+      } catch (error) {
+        console.error('Error fetching highlights:', error);
+        setSlides(defaultSlides);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchHighlights();
   }, []);
 
-  // const slides = [
-  //   {
-  //     image: '/hero-1.jpg',
-  //     title: 'Karunya Special School',
-  //     description: 'We provide Education for Specially Aided Children in and around Malpe',
-  //     tagline: 'dare to be DIFFERENT'
-  //   },
-  //   {
-  //     image: '/hero-2.jpeg',
-  //     title: 'Education for Specially Aided Children',
-  //     description: 'Creating a nurturing environment for children with special needs to learn and grow',
-  //     tagline: 'Empowering Every Child'
-  //   },
-  //   {
-  //     image: '/hero-3.jpeg',
-  //     title: 'Building Future Together',
-  //     description: 'Supporting children with autism, down syndrome, and special learning needs',
-  //     tagline: 'Making Dreams Possible'
-  //   }
-  // ];
-
+  // Default slides to use if no highlights are found or there's an error
+  const defaultSlides = [
+    {
+      id: '1',
+      image: '/hero-1.jpg',
+      title: 'Karunya Special School',
+      description: 'We provide Education for Specially Aided Children in and around Malpe',
+      tagline: 'dare to be DIFFERENT'
+    },
+    {
+      id: '2',
+      image: '/hero-2.jpeg',
+      title: 'Education for Specially Aided Children',
+      description: 'Creating a nurturing environment for children with special needs to learn and grow',
+      tagline: 'Empowering Every Child'
+    },
+    {
+      id: '3',
+      image: '/hero-3.jpeg',
+      title: 'Building Future Together',
+      description: 'Supporting children with autism, down syndrome, and special learning needs',
+      tagline: 'Making Dreams Possible'
+    }
+  ];
 
   useEffect(() => {
+    if (slides.length === 0) return;
+    
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
   }, [slides.length]);
+
+  if (loading) {
+    return (
+      <section aria-label="Hero Slider" className="relative h-[600px] md:h-[700px] flex items-center justify-center bg-gradient-to-b from-primary-yellow/5 to-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF4B00]"></div>
+      </section>
+    );
+  }
 
   return (
     <section aria-label="Hero Slider" className="relative h-[600px] md:h-[700px] overflow-hidden bg-gradient-to-b from-primary-yellow/5 to-white">
@@ -56,13 +82,15 @@ const Highlights = () => {
               currentSlide === index ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <Image
-              src={slide.image}
-              alt={slide.title}
-              fill
-              className="object-cover"
-              priority={index === 0}
-            />
+            {slide.image && (
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                className="object-cover"
+                priority={index === 0}
+              />
+            )}
             {/* Light Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-primary-yellow/10 to-white/90" />
             
